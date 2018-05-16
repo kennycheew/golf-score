@@ -13,7 +13,7 @@ app.prepare()
   .then(() => {
     const server = express()
 
-    server.all('/admin*', basicAuth({ users: { 'admin': 'supersecret' }, challenge: true }))
+    server.all('/admin*', basicAuth({ users: { 'kawee': 'cheew8' }, challenge: true }))
 
     server.get('*', (req, res) => {
       return handle(req, res)

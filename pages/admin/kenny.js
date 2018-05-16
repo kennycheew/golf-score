@@ -55,8 +55,6 @@ class Admin extends React.Component {
 
   render() {
     const newPostKey = rootRef.child('/users/').push().key;
-    console.log(newPostKey)
-    console.log(this.state)
     return (
       <Context>
         <Container>

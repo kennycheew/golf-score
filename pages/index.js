@@ -2,16 +2,17 @@ import React from 'react'
 import Link from 'next/link'
 
 import { Context, Container, FullBackground } from '../components/baseComponents'
+import Navbar from '../components/Navbar'
 import styled from 'styled-components'
 import firebase from '../libs/firebase'
 import config from '../config'
 
-const rootRef = firebase.database().ref()
+const rootRef = firebase.database().ref('golfscore')
 
 const Table = styled.table`
 
   border-collapse: collapse;
-` 
+`
 
 const TableRow = styled.tr`
   background: ${props => props.bgColor || 'transparent'};
@@ -216,65 +217,129 @@ class Home extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      dayDisplay: 'dayThree'
+      dayDisplay: 'dayThree',
+      fixTableHead: false,
+      textDb: null
     }
-    rootRef.child('GolfScore').on('value', (snapshot) => {
+    rootRef.child('textDb').on('value', (snapshot) => {
       const data = snapshot.val()
-      this.setState({ ...data })
+      const updatedTime = Date.now()
+      this.setState({ textDb: data, updatedTime })
     })
+
+  }
+
+  componentDidMount() {
+    window.addEventListener('scroll', this.onScroll);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.onScroll);
+  }
+
+  onScroll(e) {
+    // console.log(window.scrollY)
+    // if (window.scrollY > 40) {
+    //   this.setState({ fixTableHead: true })
+    // } else {
+    //   this.setState({ fixTableHead: false })
+    // }
   }
   
   render() {
+    if (!this.state.textDb) {
+      return (null)
+    }
+    const row = this.state.textDb.split('""')
+
+    const data = row.map(rowData => {
+      const splitData = rowData.split('	')
+      const userData = {}
+      userData.ranking = splitData[1]
+      userData.score = splitData[2]
+      userData.name = splitData[3]
+      if (splitData[3]) {
+        userData.name = splitData[3].replace(/"/g, '')
+      }
+      userData.dayOne = []
+      for (const i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]) {
+        userData.dayOne.push(splitData[3+i])
+      }
+      userData.dayTwo = []
+      for (const i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]) {
+        userData.dayTwo.push(splitData[3+18+i])
+      }
+      userData.dayThree = []
+      for (const i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]) {
+        userData.dayThree.push(splitData[3+18+18+i])
+      }
+      return userData
+    })
     const head = data[0]
     const body = data.slice(1)
 
     const sumCourt = head[this.state.dayDisplay].reduce((a,b) => +a + + b)
-    console.log(body)
+
+    let dayDisplay = 'dayOne'
+    if (this.props.url.query.d == 2) dayDisplay = 'dayTwo'
+    if (this.props.url.query.d == 3) dayDisplay = 'dayThree'
+
     return (
       <FullBackground color="#cecece">
         <Context>
           <Container>
-            <div>
-              2018 - 10 - 03
-            </div>
-            <div>
+            <Navbar />
+            {/* <div>
+              {`Last update: ${this.state.updatedTime.getHours()}:  ${this.state.updatedTime.getMinutes() }:${this.state.updatedTime.getSeconds()}`}
+            </div> */}
+            {/* <div>
               <button onClick={() => this.setState({ dayDisplay: 'dayOne' })}>day 1</button>
 
               <button onClick={() => this.setState({ dayDisplay: 'dayTwo' })}>day 2</button>
 
               <button onClick={() => this.setState({ dayDisplay: 'dayThree' })}>day 3</button>
-            </div>
+            </div> */}
             <Table>
-              <TableRow bgColor="linear-gradient(#76af70, white)">
-                <TableItem>
-                  Pos.
-                </TableItem>
-                <TableItem align="left">
-                  Name
-                </TableItem>
-                <TableItem>
-                  Score
-                </TableItem>  
-                {
-                  head[this.state.dayDisplay].map((par, index) => {
-                    let prefix = 0
-                    if (this.state.dayDisplay === 'dayTwo') prefix = 1
-                    if (this.state.dayDisplay === 'dayThree') prefix = 2
-                    return (
-                      <TableItem>
-                        {index + 1 + (18 * prefix)}<br />({par})
-                      </TableItem>
-                    )
-                  })
-                }
-                <TableItem>
-                  Today<br />({sumCourt})
-                </TableItem>
-              </TableRow>
+              <thead>
+                <TableRow bgColor="linear-gradient(#76af70, white)" fixTableHead={this.state.fixTableHead} >
+                  <TableItem>
+                    Pos.
+                  </TableItem>
+                  <TableItem align="center">
+                    Name
+                  </TableItem>
+                  <TableItem>
+                    Score
+                  </TableItem>  
+                  {
+                    head[dayDisplay ].map((par, index) => {
+                      let prefix = 0
+                      if (dayDisplay   === 'dayTwo') prefix = 1
+                      if (dayDisplay   === 'dayThree') prefix = 2
+                      // return (
+                      //   <TableItem>
+                      //     {index + 1 + (18 * prefix)}<br />({par})
+                      //   </TableItem>
+                      // )
+                      return (
+                        <TableItem>
+                          {index + 1  }<br />({par})
+                        </TableItem>
+                      )
+                    })
+                  }
+                  <TableItem>
+                    {
+                      dayDisplay   === 'dayOne' ? 'Day 1' : (
+                      dayDisplay   === 'dayTwo' ? 'Day 2' : 'Day 3'
+                      )
+                    }
+                    <br />({sumCourt})
+                  </TableItem>
+                </TableRow>
+              </thead>
               {
                 body.map((userData, userIndex) => {
-                  console.log(userData[this.state.dayDisplay].filter(d => d))
-                  const sumUser = userData[this.state.dayDisplay].reduce((a,b) => +a + + b)
+                  const sumUser = userData[dayDisplay ].reduce((a,b) => +a + + b)
                   return (
                     <TableRow bgColor={userIndex % 2 === 0 ? '#b1b9b1' : '#7da0a5'}>
                       <TableItem>
@@ -289,22 +354,22 @@ class Home extends React.Component {
                         }
                       </TableItem>
                       {
-                        userData[this.state.dayDisplay].map((hole, index) => {
-                          if (hole == head[this.state.dayDisplay][index]) {
+                        userData[dayDisplay ].map((hole, index) => {
+                          if (hole == head[dayDisplay ][index]) {
                             return (
                               <TableItem color="white ">
                                 {hole}
                               </TableItem>
                             )
                           }
-                          if (hole < head[this.state.dayDisplay][index] - 1 && hole) {
+                          if (hole < head[dayDisplay  ][index] - 1 && hole) {
                             return (
                               <TableItem color="red" bgColor="#e6e66d">
                                 {hole}
                               </TableItem>
                             )
                           }
-                          if (hole < head[this.state.dayDisplay][index]) {
+                          if (hole < head[dayDisplay  ][index]) {
                             return (
                               <TableItem color="red">
                                 {hole}
