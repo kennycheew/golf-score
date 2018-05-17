@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import styled from 'styled-components'
-import { Base, Container, Image } from './baseComponents'
+import { Base, Container, Image, Button } from './baseComponents'
 
 const NavbarContext = styled.div`
   width: 100%;  
@@ -15,42 +15,56 @@ const FlexWrapper = styled.div`
 const TabContainer = styled.div`
   display: flex;
   list-style: none;
-  height: 40px;sss
+  padding-left: 12px;
 `
 
 const TabItem = styled.div` 
-  ${Base}
   float: left;
 `
 
 const Navbar = (props) => {
+  const tabList = [
+    {
+      text: 'Day 1',
+      color: 'white',
+      link: '1'
+    },
+    {
+      text: 'Day 2',
+      color: 'white',
+      link: '2'
+    },
+    {
+      text: 'Day 3',
+      color: 'white',
+      link: '3'
+    }
+  ]
+
+  tabList[+props.url.query.d - 1].color = '#d2d2d2'
   return (
     <NavbarContext>
       <Container>
         <FlexWrapper>
           <div>
-            <Image src="/static/logo/logo_spga.png" width="40px"/>
+            <Image src="/static/logo/logo_spga.png" width="56px"/>
           </div>
           <FlexWrapper style={{ 'flex-direction': "column"}}>
             <div style={{paddingLeft: '12px', fontSize: '24px'}}>
               Artitaya Senior Championship
             </div>
             <TabContainer>
-              <TabItem>
-                <Link href="/?d=1">
-                  Day 1
-                </Link>
-              </TabItem>
-              <TabItem>
-                <Link href="/?d=2">
-                  Day 2
-                </Link>
-              </TabItem> 
-              <TabItem>
-                <Link href="/?d=3">
-                  Day 3
-                </Link>
-              </TabItem> 
+              {
+                tabList.map(item => (
+                  <TabItem>
+                    <Link href={`/?d=${item.link}`}>
+                      <Button color={item.color}>
+                        {item.text}
+                      </Button>
+                    </Link>
+                  </TabItem>
+                ))
+              }
             </TabContainer>
           </FlexWrapper>
         </FlexWrapper>
