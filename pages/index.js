@@ -9,25 +9,45 @@ import config from '../config'
 
 const rootRef = firebase.database().ref('golfscore')
 
-const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  ${props => props.fix && 'position: fixed; top: 0; display: none;'}
-  ${props => props.displayHead && 'display: table;'}
+const TableWrapper = styled.div`
+  height: 100vh;
 `
 
-const TableRow = styled.tr`
-  background: ${props => props.bgColor || 'transparent'};
-  border-collapse: collapse;
+const Table = styled.div`
+  height: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
 `
 
-const TableItem = styled.td`
-  min-width: 32px;
-  text-align: ${props => props.align || 'center'};
+const TableHead = styled.div`
+  width: 100vh;
+  margin: auto;
+`
+
+const TableBody = styled.div`
+  overflow-y: scroll;
+  height: 93vh;
+  width: 100vh;
+  margin: auto;
+  ::-webkit-scrollbar { 
+    display: none; 
+  }
+`
+
+const TableRow = styled.div`
+  display: flex;
+  background: ${props => props.bgColor || 'transparent'};  
+`
+
+const TableItem = styled.div` 
+  padding: 12px   8px;
   border: 1px solid black;
-  border-collapse: collapse;
-  color: ${props => props.color || 'black'};
+  overflow: hidden;
+  width: ${props => props.width || 'auto'};
+  text-align: ${props => props.align || 'center'};
+  font-weight: ${props => props.bold ? 'bold' : 'normal'};
   background-color: ${props => props.bgColor || 'transparent'};
+  color: ${props => props.color || 'black'};
 `
 
 const getSumShot = (data) => {
@@ -41,13 +61,14 @@ const checkDiffUserCourt = (userRaw, courtRaw) => {
   const sumUser = getSumShot(userRaw)
 }
 
+const tableConfig = ['50px', '300px', '80px', '50px', '50px', '50px', '50px', '50px', '50px', '50px', '50px', '50px', '50px', '50px', '50px', '50px', '50px', '50px', '50px', '50px', '50px', '130px']
+
 
 class Home extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       dayDisplay: 'dayThree',
-      displayHead: false,
       textDb: null
     }
     rootRef.child('textDb').on('value', (snapshot) => {
@@ -55,25 +76,9 @@ class Home extends React.Component {
       const updatedTime = Date.now()
       this.setState({ textDb: data, updatedTime })
     })
-    this.onScroll = this.onScroll.bind(this)
 
   }
 
-  componentDidMount() {
-    window.addEventListener('scroll', this.onScroll);
-  }
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.onScroll);
-  }
-
-  onScroll(e) {
-    if (window.scrollY > 60) {
-      this.setState({ displayHead: true })
-    } else {
-      this.setState({ displayHead: false })
-    }
-  }
-  
   render() {
     if (!this.state.textDb) {
       return (null)
@@ -117,27 +122,17 @@ class Home extends React.Component {
         <Context>
           <Container>
             <Navbar {...this.props}/>
-            {/* <div>
-              {`Last update: ${this.state.updatedTime.getHours()}:  ${this.state.updatedTime.getMinutes() }:${this.state.updatedTime.getSeconds()}`}
-            </div> */}
-            {/* <div>
-              <button onClick={() => this.setState({ dayDisplay: 'dayOne' })}>day 1</button>
-
-              <button onClick={() => this.setState({ dayDisplay: 'dayTwo' })}>day 2</button>
-
-              <button onClick={() => this.setState({ dayDisplay: 'dayThree' })}>day 3</button>
-            </div> */}
-            <div>
-              <Table fix displayHead={this.state.displayHead}>
-                <thead> 
-                  <TableRow bgColor="linear-gradient(#76af70, white)" displayHead={this.state.displayHead} >
-                    <TableItem>
+            <TableWrapper>
+              <Table>
+                <TableHead>
+                  <TableRow bgColor="linear-gradient(#76af70, white)">
+                    <TableItem width={tableConfig[0]}>
                       Pos.
                     </TableItem>
-                    <TableItem align="center">
+                    <TableItem align="center" width={tableConfig[1]}>
                       Name
                     </TableItem>
-                    <TableItem>
+                    <TableItem width={tableConfig[2]}>
                       Score
                     </TableItem>
                     {
@@ -145,41 +140,36 @@ class Home extends React.Component {
                         let prefix = 0
                         if (dayDisplay   === 'dayTwo') prefix = 1
                         if (dayDisplay   === 'dayThree') prefix = 2
-                        // return (
-                        //   <TableItem>
-                        //     {index + 1 + (18 * prefix)}<br />({par})
-                        //   </TableItem>
-                        // )
                         return (
-                          <TableItem>
-                            {index + 1  }<br />({par})
+                          <TableItem width={tableConfig[3+index]}>
+                            {index + 1  } ({par})
                           </TableItem>
                         )
                       })
                     }
-                    <TableItem>
+                    <TableItem width={tableConfig[21]}>
                       {
                         dayDisplay   === 'dayOne' ? 'Day 1' : (
                         dayDisplay   === 'dayTwo' ? 'Day 2' : 'Day 3'
-                        )
+                        ) 
                       }
                       <br />({sumCourt})
                     </TableItem>
                   </TableRow>
-                </thead>
-                <tbody style={{ visibility: 'collapse'  }}>
+                </TableHead>
+                <TableBody>
                   {
                     body.map((userData, userIndex) => {
                       const sumUser = userData[dayDisplay ].reduce((a,b) => +a + + b)
                       return (
                         <TableRow bgColor={userIndex % 2 === 0 ? '#b1b9b1' : '#7da0a5'}>
-                          <TableItem>
+                          <TableItem width={tableConfig[0]}>
                             {userData.ranking}
                           </TableItem>
-                          <TableItem align="left">
+                          <TableItem align="left" width={tableConfig[1]}>
                             {userData.name}
                           </TableItem>
-                          <TableItem color={userData.score < 0 ? 'red' : userData.score > 0 ? 'blue' : null}>
+                          <TableItem color={userData.score < 0 ? 'red' : userData.score > 0 ? 'blue' : null} width={tableConfig[2]}>
                             {
                               userData.score == 0 ? 'E' : userData.score > 0 ? `+${userData.score}` : userData.score
                             }
@@ -188,33 +178,33 @@ class Home extends React.Component {
                             userData[dayDisplay ].map((hole, index) => {
                               if (hole == head[dayDisplay ][index]) {
                                 return (
-                                  <TableItem color="white ">
+                                  <TableItem color="white " width={tableConfig[3 + index]} style={{ borderLeft: `1px solid ${index === 9 ? 'white' : 'black '}`, borderRight: `1px solid ${index === 8 ? 'white' : 'black '}`}}>
                                     {hole}
                                   </TableItem>
                                 )
                               }
                               if (hole < head[dayDisplay  ][index] - 1 && hole) {
                                 return (
-                                  <TableItem color="red" bgColor="#e6e66d">
+                                  <TableItem color="red" bgColor="#e6e66d" width={tableConfig[3 + index]} style={{ borderLeft: `1px solid ${index === 9 ? 'white' : 'black '}`, borderRight: `1px solid ${index === 8 ? 'white' : 'black '}`}}>
                                     {hole}
                                   </TableItem>
                                 )
                               }
                               if (hole < head[dayDisplay  ][index]) {
                                 return (
-                                  <TableItem color="red">
+                                  <TableItem color="red" width={tableConfig[3 + index]} style={{ borderLeft: `1px solid ${index === 9 ? 'white' : 'black '}`, borderRight: `1px solid ${index === 8 ? 'white' : 'black '}`}}>
                                     {hole}
                                   </TableItem>
                                 )
                               }
                               return (
-                                <TableItem>
-                                  {hole}
+                                  <TableItem width={tableConfig[3 + index]} style={{ borderLeft: `1px solid ${index === 9 ? 'white' : 'black '}`, borderRight: `1px solid ${index === 8 ? 'white' : 'black '}`}}>
+                                    {hole}
                                 </TableItem>
                               )
                             })
                           }
-                          <TableItem color={sumUser - sumCourt < 0 ? 'red' : sumUser - sumCourt > 0 ? 'blue' : null}>
+                          <TableItem color={sumUser - sumCourt < 0 ? 'red' : sumUser - sumCourt > 0 ? 'blue' : null} width={tableConfig[21]}>
                             {sumUser - sumCourt == 0 ? 'E' : sumUser - sumCourt > 0 ? `+${sumUser - sumCourt}` : sumUser - sumCourt}
                             <span style={{color: "black"}}>
                               {` (${sumUser})`}
@@ -224,105 +214,9 @@ class Home extends React.Component {
                       )
                     })
                   }
-                </tbody>
+                </TableBody>
               </Table>
-              <Table>
-                <thead> 
-                  <TableRow bgColor="linear-gradient(#76af70, white)" displayHead={this.state.displayHead} >
-                    <TableItem>
-                      Pos.
-                    </TableItem>
-                    <TableItem align="center">
-                      Name
-                    </TableItem>
-                    <TableItem>
-                      Score
-                    </TableItem>
-                    {
-                      head[dayDisplay ].map((par, index) => {
-                        let prefix = 0
-                        if (dayDisplay   === 'dayTwo') prefix = 1
-                        if (dayDisplay   === 'dayThree') prefix = 2
-                        // return (
-                        //   <TableItem>
-                        //     {index + 1 + (18 * prefix)}<br />({par})
-                        //   </TableItem>
-                        // )
-                        return (
-                          <TableItem>
-                            {index + 1  }<br />({par})
-                          </TableItem>
-                        )
-                      })
-                    }
-                    <TableItem>
-                      {
-                        dayDisplay   === 'dayOne' ? 'Day 1' : (
-                        dayDisplay   === 'dayTwo' ? 'Day 2' : 'Day 3'
-                        )
-                      }
-                      <br />({sumCourt})
-                    </TableItem>
-                  </TableRow>
-                </thead>
-                {
-                  body.map((userData, userIndex) => {
-                    const sumUser = userData[dayDisplay ].reduce((a,b) => +a + + b)
-                    return (
-                      <TableRow bgColor={userIndex % 2 === 0 ? '#b1b9b1' : '#7da0a5'}>
-                        <TableItem>
-                          {userData.ranking}
-                        </TableItem>
-                        <TableItem align="left">
-                          {userData.name}
-                        </TableItem>
-                        <TableItem color={userData.score < 0 ? 'red' : userData.score > 0 ? 'blue' : null}>
-                          {
-                            userData.score == 0 ? 'E' : userData.score > 0 ? `+${userData.score}` : userData.score
-                          }
-                        </TableItem>
-                        {
-                          userData[dayDisplay ].map((hole, index) => {
-                            if (hole == head[dayDisplay ][index]) {
-                              return (
-                                <TableItem color="white ">
-                                  {hole}
-                                </TableItem>
-                              )
-                            }
-                            if (hole < head[dayDisplay  ][index] - 1 && hole) {
-                              return (
-                                <TableItem color="red" bgColor="#e6e66d">
-                                  {hole}
-                                </TableItem>
-                              )
-                            }
-                            if (hole < head[dayDisplay  ][index]) {
-                              return (
-                                <TableItem color="red">
-                                  {hole}
-                                </TableItem>
-                              )
-                            }
-                            return (
-                              <TableItem>
-                                {hole}
-                              </TableItem>
-                            )
-                          })
-                        }
-                        <TableItem color={sumUser - sumCourt < 0 ? 'red' : sumUser - sumCourt > 0 ? 'blue' : null}>
-                          {sumUser - sumCourt == 0 ? 'E' : sumUser - sumCourt > 0 ? `+${sumUser - sumCourt}` : sumUser - sumCourt}
-                          <span style={{color: "black"}}>
-                            {` (${sumUser})`}
-                          </span>
-                        </TableItem>
-                      </TableRow>
-                    )
-                  })
-                }
-              </Table>
-            </div>
+            </TableWrapper>
           </Container>
         </Context>
       </FullBackground>
