@@ -20,14 +20,14 @@ const Table = styled.div`
 `
 
 const TableHead = styled.div`
-  width: 100vh;
+  width: fit-content;
   margin: auto;
 `
 
 const TableBody = styled.div`
   overflow-y: scroll;
   height: 93vh;
-  width: 100vh;
+  width: fit-content;
   margin: auto;
   ::-webkit-scrollbar { 
     display: none; 
@@ -61,10 +61,10 @@ const checkDiffUserCourt = (userRaw, courtRaw) => {
   const sumUser = getSumShot(userRaw)
 }
 
-const tableConfig = ['50px', '300px', '80px', '50px', '50px', '50px', '50px', '50px', '50px', '50px', '50px', '50px', '50px', '50px', '50px', '50px', '50px', '50px', '50px', '50px', '50px', '130px']
+const tableConfig = ['25px', '200px', '50px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '75px']
+  
 
-
-class Home extends React.Component {
+class Home extends React.Component {  
   constructor(props) {
     super(props)
     this.state = {
