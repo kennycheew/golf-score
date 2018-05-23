@@ -40,7 +40,7 @@ const TableRow = styled.div`
 `
 
 const TableItem = styled.div` 
-  padding: 12px   8px;
+  padding: 6px 8px;
   border: 1px solid black;
   overflow: hidden;
   width: ${props => props.width || 'auto'};
