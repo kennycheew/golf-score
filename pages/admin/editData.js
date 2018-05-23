@@ -22,36 +22,41 @@ class Admin extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      textData: ''
+      textData: '',
+      title: '',
+      subTitle: ''
     }
   }
 
   onUpdateText() {
     const textData = this.state.textData
     rootRef.child('/textDb/').set(textData)
-    // const newPostKey = rootRef.child('/users/').push().parent;
-    // console.log(newPostKey)   
-    // const updates = {}  
-    // updates['/users/' + newPostKey] = {
-    //   _id: "0001",
-    //   firstName: "kenny",
-    //   lastName: "cheew",
-    //   score: [0, 0, 0, 0]
-    // } 
-    // rootRef.update(updates)
   }
 
-  onRemoveUser() {
-    const userList = this.state.users || []
-    userList.pop()
-    rootRef.child('/users/').set(userList)
+  onUpdateTitle() {
+    const title = this.state.title
+    rootRef.child('/title/').set(title)
+  }
+
+  onUpdateSubTitle() {
+    const subTitle = this.state.subTitle
+    rootRef.child('/subTitle/').set(subTitle)
   }
 
   render() {
     return (
       <div>
+        <input style={{ width: '500px'}} onChange={(e) => this.setState({ title: e.target.value})}></input>
+        <button onClick={() => this.onUpdateTitle()}>Update Title</button>
+        <br/>
+        <br/>
+        <input style={{ width: '500px'}} onChange={(e) => this.setState({ subTitle: e.target.value})}></input>
+        <button onClick={() => this.onUpdateSubTitle()}>Update SubTitle</button>
+        <br/>
+        <br/>
         <textarea onChange={(e) => this.setState({ textData: e.target.value})}></textarea>
-        <button onClick={() => this.onUpdateText()}>Update Text</button>
+        <button onClick={() => this.onUpdateText()}>Update Score</button>
+
       </div>
     )
   }

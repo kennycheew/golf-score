@@ -51,14 +51,21 @@ const TableItem = styled.div`
 `
 
 const getSumShot = (data) => {
-  return data.reduce((a,b) => +a + + b)
+  let sum = 0
+  data.forEach(shot => sum += +shot)
+  return sum
 }
 
 const checkDiffUserCourt = (userRaw, courtRaw) => {
-  const userLength = userRaw.length
-  const courtWithUsrtlength = courtRaw.slice(0, userLength)
-  const sumCourt = courtWithUsrtlength.reduce((a,b) => +a + + b)
-  const sumUser = getSumShot(userRaw)
+  const userData = userRaw.filter(data => data)
+  const userLength = userData.length
+  const courtWithUserlength = courtRaw.slice(0, userLength)
+  const sumCourt = getSumShot(courtWithUserlength)
+  const sumShot = getSumShot(userData)
+  return {
+    sumCourt,
+    sumShot
+  }
 }
 
 const tableConfig = ['25px', '200px', '50px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '75px']
@@ -69,12 +76,22 @@ class Home extends React.Component {
     super(props)
     this.state = {
       dayDisplay: 'dayThree',
-      textDb: null
+      textDb: null,
+      title: '',
+      subTitle: ''
     }
     rootRef.child('textDb').on('value', (snapshot) => {
       const data = snapshot.val()
       const updatedTime = Date.now()
       this.setState({ textDb: data, updatedTime })
+    })
+    rootRef.child('title').on('value', (snapshot) => {
+      const data = snapshot.val()
+      this.setState({ title: data })
+    })
+    rootRef.child('subTitle').on('value', (snapshot) => {
+      const data = snapshot.val()
+      this.setState({ subTitle: data })
     })
 
   }
@@ -121,7 +138,7 @@ class Home extends React.Component {
       <FullBackground color="#cecece">
         <Context>
           <Container>
-            <Navbar {...this.props}/>
+            <Navbar {...this.props} title={this.state.title} subTitle={this.state.subTitle} />
             <TableWrapper>
               <Table>
                 <TableHead>
@@ -160,6 +177,7 @@ class Home extends React.Component {
                 <TableBody>
                   {
                     body.map((userData, userIndex) => {
+                      const shotData = checkDiffUserCourt(userData[dayDisplay], head[dayDisplay])
                       const sumUser = userData[dayDisplay ].reduce((a,b) => +a + + b)
                       return (
                         <TableRow bgColor={userIndex % 2 === 0 ? '#b1b9b1' : '#7da0a5'}>
@@ -204,10 +222,10 @@ class Home extends React.Component {
                               )
                             })
                           }
-                          <TableItem color={sumUser - sumCourt < 0 ? 'red' : sumUser - sumCourt > 0 ? 'blue' : null} width={tableConfig[21]}>
-                            {sumUser - sumCourt == 0 ? 'E' : sumUser - sumCourt > 0 ? `+${sumUser - sumCourt}` : sumUser - sumCourt}
+                          <TableItem color={shotData.sumShot - shotData.sumCourt < 0 ? 'red' : shotData.sumShot - shotData.sumCourt > 0 ? 'blue' : null} width={tableConfig[21]}>
+                            {shotData.sumShot - shotData.sumCourt == 0 ? 'E' : shotData.sumShot - shotData.sumCourt > 0 ? `+${shotData.sumShot - shotData.sumCourt}` : shotData.sumShot - shotData.sumCourt}
                             <span style={{color: "black"}}>
-                              {` (${sumUser})`}
+                              {` (${shotData.sumShot})`}
                             </span>
                           </TableItem>
                         </TableRow>

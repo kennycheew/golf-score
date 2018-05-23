@@ -52,7 +52,10 @@ const Navbar = (props) => {
           </div>
           <FlexWrapper style={{ 'flex-direction': "column"}}>
             <div style={{paddingLeft: '12px', fontSize: '24px'}}>
-              Artitaya Senior Championship
+              {props.title}
+            </div>
+            <div style={{paddingLeft: '12px', fontSize: '16px'}}>
+              {props.subTitle}
             </div>
             <TabContainer>
               {
