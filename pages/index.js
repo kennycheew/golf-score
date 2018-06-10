@@ -179,10 +179,14 @@ class Home extends React.Component {
                     body.map((userData, userIndex) => {
                       const shotData = checkDiffUserCourt(userData[dayDisplay], head[dayDisplay])
                       const sumUser = userData[dayDisplay ].reduce((a,b) => +a + + b)
+                      let { ranking } = userData
+                      if (userIndex != 0 && userData.score === body[userIndex - 1].score ) {
+                        ranking = ''
+                      }
                       return (
                         <TableRow bgColor={userIndex % 2 === 0 ? '#b1b9b1' : '#7da0a5'}>
                           <TableItem width={tableConfig[0]}>
-                            {userData.ranking}
+                            {ranking}
                           </TableItem>
                           <TableItem align="left" width={tableConfig[1]}>
                             {userData.name}

@@ -47,6 +47,8 @@ const Navbar = (props) => {
   ]
   if (props.url.query.d) {
     tabList[+props.url.query.d - 1].color = '#d2d2d2'
+  } else {
+    tabList[0].color = '#d2d2d2'    
   }
   return (
     <NavbarContext>
