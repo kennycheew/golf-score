@@ -4,7 +4,12 @@ import { Base, Container, Image, Button } from './baseComponents'
 
 const NavbarContext = styled.div`
   width: 100%;  
+`
+
+const NavbarContainer = styled.div`
+  max-width: 1196px;
   background-color: #f3ffe6;
+  margin: auto;
 `
 
 const FlexWrapper = styled.div`
@@ -18,7 +23,7 @@ const TabContainer = styled.div`
   padding-left: 12px;
 `
 
-const TabItem = styled.div` 
+const TabItem = styled.div`
   float: left;
 `
 
@@ -45,7 +50,7 @@ const Navbar = (props) => {
   }
   return (
     <NavbarContext>
-      <Container>
+      <NavbarContainer>
         <FlexWrapper>
           <div>
             <Image src="/static/logo/logo_spga.png" width="56px"/>
@@ -72,7 +77,7 @@ const Navbar = (props) => {
             </TabContainer>
           </FlexWrapper>
         </FlexWrapper>
-      </Container>
+      </NavbarContainer>
     </NavbarContext>
   )
 }
