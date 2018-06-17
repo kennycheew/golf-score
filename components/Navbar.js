@@ -45,8 +45,8 @@ const Navbar = (props) => {
       link: '3'
     }
   ]
-  if (props.url.query.d) {
-    tabList[+props.url.query.d - 1].color = '#d2d2d2'
+  if (props.selectedDay) {
+    tabList[+props.selectedDay - 1].color = '#d2d2d2'
   } else if (props.defaultDay) {
     tabList[+props.defaultDay - 1].color = '#d2d2d2'    
   } else {
@@ -68,13 +68,11 @@ const Navbar = (props) => {
             </div>
             <TabContainer>
               {
-                tabList.map(item => (
+                tabList.map((item, index) => (
                   <TabItem>
-                    <Link href={`/?d=${item.link}`}>
-                      <Button color={item.color}>
-                        {item.text}
-                      </Button>
-                    </Link>
+                    <Button color={item.color} onClick={() => props.selectDay(index + 1)}>
+                      {item.text}
+                    </Button>
                   </TabItem>
                 ))
               }

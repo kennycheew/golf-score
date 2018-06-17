@@ -79,6 +79,7 @@ class Home extends React.Component {
       textDb: null,
       title: '',
       subTitle: '',
+      selectedDay: '',
       defaultDay: '1'
     }
     rootRef.child('textDb').on('value', (snapshot) => {
@@ -94,11 +95,15 @@ class Home extends React.Component {
       const data = snapshot.val()
       this.setState({ subTitle: data })
     })
-    rootRef.child('de faultDay').on('value', (snapshot) => {
+    rootRef.child('defaultDay').on('value', (snapshot) => {
       const data = snapshot.val()
       this.setState({ defaultDay: data })
     })
 
+  }
+
+  selectDay(day) {
+    this.setState({ selectedDay: day })
   }
 
   render() {
@@ -154,13 +159,18 @@ class Home extends React.Component {
     const sumCourt = head[this.state.dayDisplay].reduce((a,b) => +a + + b)
 
     let dayDisplay = 'dayOne'
-    if (this.props.url.query.d == 2 || this.state.defaultDay === '2') dayDisplay = 'dayTwo'
-    if (this.props.url.query.d == 3 || this.state.defaultDay === '3') dayDisplay = 'dayThree'
+    if (this.state.selectedDay) {
+      if (this.state.selectedDay == 2) dayDisplay = 'dayTwo'
+      if (this.state.selectedDay == 3) dayDisplay = 'dayThree'
+    } else {
+      if (this.state.defaultDay === '2') dayDisplay = 'dayTwo'
+      if (this.state.defaultDay === '3') dayDisplay = 'dayThree'
+    }
     return (
       <FullBackground color="#cecece">
         <Context>
           <Container>
-            <Navbar {...this.props} title={this.state.title} subTitle={this.state.subTitle} defaultDay={this.state.defaultDay}/>
+            <Navbar {...this.props} {...this.state} selectDay={(day) => this.selectDay(day)}/>
             <TableWrapper>
               <Table>
                 <TableHead>
