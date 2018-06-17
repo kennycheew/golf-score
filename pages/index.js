@@ -26,7 +26,7 @@ const TableHead = styled.div`
 
 const TableBody = styled.div`
   overflow-y: scroll;
-  height: 80vh;
+  height: 91vh;
   width: fit-content;
   margin: auto;
   ::-webkit-scrollbar { 
@@ -102,6 +102,15 @@ class Home extends React.Component {
     }
     const row = this.state.textDb.split('""')
 
+    const emptyData = {
+      dayOne: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+      dayThree: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+      dayTwo: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+      name: '',
+      ranking: '',
+      score: ''
+    }
+
     const data = row.map(rowData => {
       const splitData = rowData.split('	')
       const userData = {}
@@ -127,7 +136,16 @@ class Home extends React.Component {
     })
     const head = data[0]
     const body = data.slice(1)
+    console.log(body)
     body.pop()
+
+    let i = 0
+
+    while(i<100) {
+      body.push(emptyData)
+      i++
+    }
+
     
     const sumCourt = head[this.state.dayDisplay].reduce((a,b) => +a + + b)
 
