@@ -26,7 +26,7 @@ const TableHead = styled.div`
 
 const TableBody = styled.div`
   overflow-y: scroll;
-  height: 93vh;
+  height: 80vh;
   width: fit-content;
   margin: auto;
   ::-webkit-scrollbar { 
