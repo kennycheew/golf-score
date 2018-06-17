@@ -78,7 +78,8 @@ class Home extends React.Component {
       dayDisplay: 'dayThree',
       textDb: null,
       title: '',
-      subTitle: ''
+      subTitle: '',
+      defaultDay: '1'
     }
     rootRef.child('textDb').on('value', (snapshot) => {
       const data = snapshot.val()
@@ -92,6 +93,10 @@ class Home extends React.Component {
     rootRef.child('subTitle').on('value', (snapshot) => {
       const data = snapshot.val()
       this.setState({ subTitle: data })
+    })
+    rootRef.child('de faultDay').on('value', (snapshot) => {
+      const data = snapshot.val()
+      this.setState({ defaultDay: data })
     })
 
   }
@@ -136,7 +141,6 @@ class Home extends React.Component {
     })
     const head = data[0]
     const body = data.slice(1)
-    console.log(body)
     body.pop()
 
     let i = 0
@@ -150,13 +154,13 @@ class Home extends React.Component {
     const sumCourt = head[this.state.dayDisplay].reduce((a,b) => +a + + b)
 
     let dayDisplay = 'dayOne'
-    if (this.props.url.query.d == 2) dayDisplay = 'dayTwo'
-    if (this.props.url.query.d == 3) dayDisplay = 'dayThree'
+    if (this.props.url.query.d == 2 || this.state.defaultDay === '2') dayDisplay = 'dayTwo'
+    if (this.props.url.query.d == 3 || this.state.defaultDay === '3') dayDisplay = 'dayThree'
     return (
       <FullBackground color="#cecece">
         <Context>
           <Container>
-            <Navbar {...this.props} title={this.state.title} subTitle={this.state.subTitle} />
+            <Navbar {...this.props} title={this.state.title} subTitle={this.state.subTitle} defaultDay={this.state.defaultDay}/>
             <TableWrapper>
               <Table>
                 <TableHead>
@@ -202,7 +206,7 @@ class Home extends React.Component {
                         ranking = ''
                       }
                       return (
-                        <TableRow bgColor={userIndex % 2 === 0 ? '#b1b9b1' : '#7da0a5'}>
+                        <TableRow bgColor={userIndex % 2 === 0 ? '#bbbbbb' : '#a0a0a0'}>
                           <TableItem width={tableConfig[0]}>
                             {ranking}
                           </TableItem>

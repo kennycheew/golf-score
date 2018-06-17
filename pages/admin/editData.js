@@ -24,7 +24,8 @@ class Admin extends React.Component {
     this.state = {
       textData: '',
       title: '',
-      subTitle: ''
+      subTitle: '',
+      defaultDay: '1'
     }
   }
 
@@ -43,19 +44,30 @@ class Admin extends React.Component {
     rootRef.child('/subTitle/').set(subTitle)
   }
 
+  onUpdateDefaultDay() {
+    const defaultDay = this.state.defaultDay
+    rootRef.child('/defaultDay/').set(defaultDay)
+  }
+
   render() {
     return (
       <div>
-        <input style={{ width: '500px'}} onChange={(e) => this.setState({ title: e.target.value})}></input>
-        <button onClick={() => this.onUpdateTitle()}>Update Title</button>
+        <input style={{ width: '500px'}} onChange={(e) => this.setState({ title: e.target.value})} value={this.state.title}></input>
+        <button onClick={() => this.onUpdateTitle()}>Set Title</button>
         <br/>
         <br/>
-        <input style={{ width: '500px'}} onChange={(e) => this.setState({ subTitle: e.target.value})}></input>
-        <button onClick={() => this.onUpdateSubTitle()}>Update SubTitle</button>
+        <input style={{ width: '500px'}} onChange={(e) => this.setState({ subTitle: e.target.value})} value={this.state.subTitle}></input>
+        <button onClick={() => this.onUpdateSubTitle()}>Set SubTitle</button>
+        <br/>
+        <br/>
+        <input style={{ width: '500px'}} onChange={(e) => this.setState({ defaultDay: e.target.value})} value={this.state.defaultDay}></input>
+        <button onClick={() => this.onUpdateDefaultDay  ()}>Set default day</button>
         <br/>
         <br/>
         <textarea onChange={(e) => this.setState({ textData: e.target.value})}></textarea>
         <button onClick={() => this.onUpdateText()}>Update Score</button>
+        
+        
 
       </div>
     )
