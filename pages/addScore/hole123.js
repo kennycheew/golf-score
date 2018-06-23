@@ -125,13 +125,6 @@ class Home extends React.Component {
     })
   }
 
-  onChangeUser(rowIndex, itemIndex, value) {
-    let formData = this.state.formData
-    formData[rowIndex][itemIndex] = value
-
-    rootRef.child('/formData/').set(formData)
-  }
-
   onChangeHoleData(rowIndex, holeIndex, value) {
     let formData = this.state.formData
     formData[rowIndex][3][holeIndex] = value
@@ -143,7 +136,7 @@ class Home extends React.Component {
     if (!this.state.formData) {
       return (null)
     }
-   
+
     return (
       <FullBackground color="#cecece">
         <Context>
@@ -158,21 +151,6 @@ class Home extends React.Component {
                     <TableItem width={tableConfig[3]}>1</TableItem>
                     <TableItem width={tableConfig[4]}>2</TableItem>
                     <TableItem width={tableConfig[5]}>3</TableItem>
-                    <TableItem width={tableConfig[6]}>4</TableItem>
-                    <TableItem width={tableConfig[7]}>5</TableItem>
-                    <TableItem width={tableConfig[8]}>6</TableItem>
-                    <TableItem width={tableConfig[9]}>7</TableItem>
-                    <TableItem width={tableConfig[10]}>8</TableItem>
-                    <TableItem width={tableConfig[11]}>9</TableItem>
-                    <TableItem width={tableConfig[12]}>10</TableItem>
-                    <TableItem width={tableConfig[13]}>11</TableItem>
-                    <TableItem width={tableConfig[14]}>12</TableItem>
-                    <TableItem width={tableConfig[15]}>13</TableItem>
-                    <TableItem width={tableConfig[16]}>14</TableItem>
-                    <TableItem width={tableConfig[17]}>15</TableItem>
-                    <TableItem width={tableConfig[18]}>16</TableItem>
-                    <TableItem width={tableConfig[19]}>17</TableItem>
-                    <TableItem width={tableConfig[20]}>18</TableItem>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -180,24 +158,23 @@ class Home extends React.Component {
                     this.state.formData.map((rowData, rowIndex) => {
                       return (
                         <TableRow>
-                          <TableItem width={tableConfig[0]}>
-                            <HoleInput type="text" value={rowData[0]} onChange={(e) => this.onChangeName(rowIndex, 0, e.target.value)}/>
-                          </TableItem>
-                          <TableItem width={tableConfig[1]}>
-                            <HoleInput type="text" value={rowData[1]} onChange={(e) => this.onChangeName(rowIndex, 1, e.target.value)}/>
-                          </TableItem>
-                          <TableItem width={tableConfig[2]}>
-                            <HoleInput type="text" value={rowData[2]} onChange={(e) => this.onChangeName(rowIndex, 2, e.target.value)}/>
-                          </TableItem>
+                          <TableItem width={tableConfig[0]}>{rowData[0]}</TableItem>
+                          <TableItem width={tableConfig[1]}>{rowData[1]}</TableItem>
+                          <TableItem width={tableConfig[2]}>{rowData[2]}</TableItem>
                           {
-                            rowData[3].map((hole, holeIndex) => (
-                              <TableItem
-                                width={tableConfig[3+holeIndex]}
-                                style={{ cursor: 'pointer', borderLeft: `1px solid ${holeIndex === 9 ? 'white' : 'black '}`, borderRight: `1px solid ${holeIndex === 8 ? 'white' : 'black '}`}}
-                              >
-                                <HoleInput type="number" value={hole === 'empty' ? null : hole} onChange={(e) => this.onChangeHoleData(rowIndex , holeIndex, e.target.value)}/>
-                              </TableItem>
-                            ))
+                            rowData[3].map((hole, holeIndex) => {
+                              if ([1,2,3].includes(holeIndex + 1)) {
+                                return (
+                                  <TableItem
+                                    width={tableConfig[3+holeIndex]}
+                                    style={{ cursor: 'pointer', borderLeft: `1px solid ${holeIndex === 9 ? 'white' : 'black '}`, borderRight: `1px solid ${holeIndex === 8 ? 'white' : 'black '}`}}
+                                  >
+                                    <HoleInput type="number" value={hole === 'empty' ? null : hole} onChange={(e) => this.onChangeHoleData(rowIndex , holeIndex, e.target.value)}/>
+                                  </TableItem>
+                                )
+                              }
+                              return null
+                            })
                           }
                         </TableRow>
                       )
