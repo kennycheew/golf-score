@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import firebase from '../libs/firebase'
 import config from '../config'
 
-const rootRef = firebase.database().ref('golfscore')
+const rootRef = firebase.database().ref('golfscore/tctlivegolfscore')
 
 const TableWrapper = styled.div`
   height: 100vh;

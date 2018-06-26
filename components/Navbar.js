@@ -57,7 +57,7 @@ const Navbar = (props) => {
       <NavbarContainer>
         <FlexWrapper>
           <div>
-            <Image src="/static/logo/logo_spga.png" width="56px"/>
+            <Image src="/static/logo/logo.jpg" width="240px"/>
           </div>
           <FlexWrapper style={{ 'flex-direction': "column"}}>
             <div style={{paddingLeft: '12px', fontSize: '24px'}}>

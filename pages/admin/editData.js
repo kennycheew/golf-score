@@ -1,11 +1,10 @@
 import React from 'react'
 import Link from 'next/link'
 
-import { Context, Container } from '../../components/baseComponents'
 import styled from 'styled-components'
 import firebase from '../../libs/firebase'
 
-const rootRef = firebase.database().ref('golfscore')
+const rootRef = firebase.database().ref('golfscore/tctlivegolfscore')
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -23,7 +22,6 @@ class Admin extends React.Component {
     super(props)
     this.state = {
       textData: '',
-      formData: '',
       title: '',
       subTitle: '',
       defaultDay: '1'
@@ -55,20 +53,6 @@ class Admin extends React.Component {
     rootRef.child('/defaultDay/').set(defaultDay)
   }
 
-  onUpdateformData() {
-    const { formData } = this.state
-
-    let dataList = formData.split('\n')
-    dataList = dataList.map(row => {
-      const rowData = row.split('\t')
-      rowData.push(['empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty'])
-      return rowData
-    })
-    dataList.push([])
-
-    rootRef.child('/formData/').set(dataList)
-  }
-
   render() {
     return (
       <div>
@@ -86,12 +70,6 @@ class Admin extends React.Component {
         <br/>
         <textarea onChange={(e) => this.setState({ textData: e.target.value})}></textarea>
         <button onClick={() => this.onUpdateText()}>Update Score</button>
-        <br/>
-        <br/>
-        <textarea onChange={(e) => this.setState({ formData: e.target.value})}></textarea>
-        <button onClick={() => this.onUpdateformData()}>Update Form Data</button>
-        
-        
 
       </div>
     )
