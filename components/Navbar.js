@@ -14,7 +14,7 @@ const NavbarContainer = styled.div`
 
 const FlexWrapper = styled.div`
   display: flex;
-  
+  flex-direction: ${(props) => props.direction ? props.direction : 'row'};
 `
 
 const TabContainer = styled.div`
@@ -55,9 +55,9 @@ const Navbar = (props) => {
   return (
     <NavbarContext>
       <NavbarContainer>
-        <FlexWrapper>
+        <FlexWrapper direction="column">
           <div>
-            <Image src="/static/logo/logo.jpg" width="240px"/>
+            <Image src="/static/logo/logo.jpg" width="100%" height="auto" style={{'max-width': '428px'}}/>
           </div>
           <FlexWrapper style={{ 'flex-direction': "column"}}>
             <div style={{paddingLeft: '12px', fontSize: '24px'}}>
