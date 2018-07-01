@@ -70,7 +70,6 @@ class Admin extends React.Component {
         <br/>
         <textarea onChange={(e) => this.setState({ textData: e.target.value})}></textarea>
         <button onClick={() => this.onUpdateText()}>Update Score</button>
-
       </div>
     )
   }

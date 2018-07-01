@@ -55,11 +55,11 @@ const Navbar = (props) => {
   return (
     <NavbarContext>
       <NavbarContainer>
-        <FlexWrapper direction="column">
+        <FlexWrapper>
           <div>
-            <Image src="/static/logo/logo.jpg" width="100%" height="auto" style={{'max-width': '428px'}}/>
+            <Image src="/static/logo/TCT-2018.jpg" width="88px" />
           </div>
-          <FlexWrapper style={{ 'flex-direction': "column"}}>
+          <FlexWrapper direction="column">
             <div style={{paddingLeft: '12px', fontSize: '24px'}}>
               {props.title}
             </div>
