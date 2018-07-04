@@ -57,9 +57,16 @@ const getSumShot = (data) => {
 }
 
 const checkDiffUserCourt = (userRaw, courtRaw) => {
-  const userData = userRaw.filter(data => data)
-  const userLength = userData.length
-  const courtWithUserlength = courtRaw.slice(0, userLength)
+  let userDataWithIndex = userRaw.map((data, index) => {return {data, index}})
+  userDataWithIndex = userDataWithIndex.filter(data => data.data)
+  const userData = userDataWithIndex.map(data => data.data)
+  const userIndex = userDataWithIndex.map(data => data.index)
+  const courtWithUserlength = courtRaw.filter((data, index) => {
+    if (userIndex.includes(index)) {
+      return true
+    }
+    return false
+  })
   const sumCourt = getSumShot(courtWithUserlength)
   const sumShot = getSumShot(userData)
   return {
