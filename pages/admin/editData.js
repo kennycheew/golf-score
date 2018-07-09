@@ -4,7 +4,7 @@ import Link from 'next/link'
 import styled from 'styled-components'
 import firebase from '../../libs/firebase'
 
-const rootRef = firebase.database().ref('golfscore/tctlivegolfscore')
+const rootRef = firebase.database().ref('golfscore/tspgalivegolfscore')
 
 const Table = styled.table`
   border-collapse: collapse;

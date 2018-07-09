@@ -7,8 +7,8 @@ import styled from 'styled-components'
 import firebase from '../libs/firebase'
 import config from '../config'
 
-const rootRef = firebase.database().ref('golfscore/tctlivegolfscore')
-
+const rootRef = firebase.database().ref('golfscore/tspgalivegolfscore')
+  
 const TableWrapper = styled.div`
   height: 100vh;
 `
@@ -57,8 +57,8 @@ const getSumShot = (data) => {
 }
 
 const checkDiffUserCourt = (userRaw, courtRaw) => {
-  let userDataWithIndex = userRaw.map((data, index) => {return {data, index}})
-  userDataWithIndex = userDataWithIndex.filter(data => data.data)
+  let userDataWithIndex = userRaw.map((data, index) => {return {data: +data, index}})
+  userDataWithIndex = userDataWithIndex.filter(data => +data.data)
   const userData = userDataWithIndex.map(data => data.data)
   const userIndex = userDataWithIndex.map(data => data.index)
   const courtWithUserlength = courtRaw.filter((data, index) => {
@@ -194,8 +194,8 @@ class Home extends React.Component {
                     {
                       head[dayDisplay ].map((par, index) => {
                         let prefix = 0
-                        if (dayDisplay   === 'dayTwo') prefix = 1
-                        if (dayDisplay   === 'dayThree') prefix = 2
+                        if (dayDisplay === 'dayTwo') prefix = 1
+                        if (dayDisplay === 'dayThree') prefix = 2
                         return (
                           <TableItem width={tableConfig[3+index]}>
                             {index + 1  } ({par})
@@ -205,8 +205,8 @@ class Home extends React.Component {
                     }
                     <TableItem width={tableConfig[21]}>
                       {
-                        dayDisplay   === 'dayOne' ? 'Day 1' : (
-                        dayDisplay   === 'dayTwo' ? 'Day 2' : 'Day 3'
+                        dayDisplay === 'dayOne' ? 'Day 1' : (
+                        dayDisplay === 'dayTwo' ? 'Day 2' : 'Day 3'
                         ) 
                       }
                       <br />({sumCourt})
@@ -237,30 +237,30 @@ class Home extends React.Component {
                           </TableItem>
                           {
                             userData[dayDisplay ].map((hole, index) => {
-                              if (hole == head[dayDisplay ][index]) {
+                              if (+hole == +head[dayDisplay][index]) {
                                 return (
                                   <TableItem color="white " width={tableConfig[3 + index]} style={{ borderLeft: `1px solid ${index === 9 ? 'white' : 'black '}`, borderRight: `1px solid ${index === 8 ? 'white' : 'black '}`}}>
-                                    {hole}
+                                    {+hole || null}
                                   </TableItem>
                                 )
                               }
-                              if (hole < head[dayDisplay  ][index] - 1 && hole) {
+                              if (+hole < +head[dayDisplay][index] - 1 && +hole) {
                                 return (
                                   <TableItem color="red" bgColor="#e6e66d" width={tableConfig[3 + index]} style={{ borderLeft: `1px solid ${index === 9 ? 'white' : 'black '}`, borderRight: `1px solid ${index === 8 ? 'white' : 'black '}`}}>
-                                    {hole}
+                                    {+hole || null}
                                   </TableItem>
                                 )
                               }
-                              if (hole < head[dayDisplay  ][index]) {
+                              if (+hole < +head[dayDisplay][index]) {
                                 return (
                                   <TableItem color="red" width={tableConfig[3 + index]} style={{ borderLeft: `1px solid ${index === 9 ? 'white' : 'black '}`, borderRight: `1px solid ${index === 8 ? 'white' : 'black '}`}}>
-                                    {hole}
+                                    {+hole || null}
                                   </TableItem>
                                 )
                               }
                               return (
                                   <TableItem width={tableConfig[3 + index]} style={{ borderLeft: `1px solid ${index === 9 ? 'white' : 'black '}`, borderRight: `1px solid ${index === 8 ? 'white' : 'black '}`}}>
-                                    {hole}
+                                    {+hole || null}
                                 </TableItem>
                               )
                             })
