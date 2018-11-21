@@ -192,7 +192,7 @@ class Home extends React.Component {
                       Score
                     </TableItem>
                     {
-                      head[dayDisplay ].map((par, index) => {
+                      head[dayDisplay].map((par, index) => {
                         let prefix = 0
                         if (dayDisplay   === 'dayTwo') prefix = 1
                         if (dayDisplay   === 'dayThree') prefix = 2
@@ -217,7 +217,7 @@ class Home extends React.Component {
                   {
                     body.map((userData, userIndex) => {
                       const shotData = checkDiffUserCourt(userData[dayDisplay], head[dayDisplay])
-                      const sumUser = userData[dayDisplay ].reduce((a,b) => +a + + b)
+                      const sumUser = userData[dayDisplay].reduce((a,b) => +a + + b)
                       let { ranking } = userData
                       if (userIndex != 0 && userData.score === body[userIndex - 1].score ) {
                         ranking = ''
@@ -236,8 +236,15 @@ class Home extends React.Component {
                             }
                           </TableItem>
                           {
-                            userData[dayDisplay ].map((hole, index) => {
-                              if (hole == head[dayDisplay ][index]) {
+                            userData[dayDisplay].map((hole, index) => {
+                              if (hole == 0) {
+                                return (
+                                  <TableItem color="red" width={tableConfig[3 + index]} style={{ borderLeft: `1px solid ${index === 9 ? 'white' : 'black '}`, borderRight: `1px solid ${index === 8 ? 'white' : 'black '}`}}>
+                                    {''}
+                                  </TableItem>
+                                )
+                              }
+                              if (hole == head[dayDisplay][index]) {
                                 return (
                                   <TableItem color="white " width={tableConfig[3 + index]} style={{ borderLeft: `1px solid ${index === 9 ? 'white' : 'black '}`, borderRight: `1px solid ${index === 8 ? 'white' : 'black '}`}}>
                                     {hole}
