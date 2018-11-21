@@ -29,17 +29,17 @@ const TableBody = styled.div`
   height: 91vh;
   width: fit-content;
   margin: auto;
-  ::-webkit-scrollbar { 
-    display: none; 
+  ::-webkit-scrollbar {
+    display: none;
   }
 `
 
 const TableRow = styled.div`
   display: flex;
-  background: ${props => props.bgColor || 'transparent'};  
+  background: ${props => props.bgColor || 'transparent'};
 `
 
-const TableItem = styled.div` 
+const TableItem = styled.div`
   padding: 6px 8px;
   border: 1px solid black;
   overflow: hidden;
@@ -76,9 +76,9 @@ const checkDiffUserCourt = (userRaw, courtRaw) => {
 }
 
 const tableConfig = ['25px', '200px', '50px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '75px']
-  
 
-class Home extends React.Component {  
+
+class Home extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -162,7 +162,7 @@ class Home extends React.Component {
       i++
     }
 
-    
+
     const sumCourt = head[this.state.dayDisplay].reduce((a,b) => +a + + b)
 
     let dayDisplay = 'dayOne'
@@ -194,8 +194,8 @@ class Home extends React.Component {
                     {
                       head[dayDisplay].map((par, index) => {
                         let prefix = 0
-                        if (dayDisplay   === 'dayTwo') prefix = 1
-                        if (dayDisplay   === 'dayThree') prefix = 2
+                        if (dayDisplay === 'dayTwo') prefix = 1
+                        if (dayDisplay === 'dayThree') prefix = 2
                         return (
                           <TableItem width={tableConfig[3+index]}>
                             {index + 1  } ({par})
@@ -205,9 +205,9 @@ class Home extends React.Component {
                     }
                     <TableItem width={tableConfig[21]}>
                       {
-                        dayDisplay   === 'dayOne' ? 'Day 1' : (
-                        dayDisplay   === 'dayTwo' ? 'Day 2' : 'Day 3'
-                        ) 
+                        dayDisplay === 'dayOne' ? 'Day 1' : (
+                        dayDisplay === 'dayTwo' ? 'Day 2' : 'Day 3'
+                        )
                       }
                       <br />({sumCourt})
                     </TableItem>
@@ -251,14 +251,14 @@ class Home extends React.Component {
                                   </TableItem>
                                 )
                               }
-                              if (hole < head[dayDisplay  ][index] - 1 && hole) {
+                              if (parseInt(hole) < parseInt(head[dayDisplay][index] - 1) && hole) {
                                 return (
                                   <TableItem color="red" bgColor="#e6e66d" width={tableConfig[3 + index]} style={{ borderLeft: `1px solid ${index === 9 ? 'white' : 'black '}`, borderRight: `1px solid ${index === 8 ? 'white' : 'black '}`}}>
                                     {hole}
                                   </TableItem>
                                 )
                               }
-                              if (hole < head[dayDisplay  ][index]) {
+                              if (parseInt(hole) < parseInt(head[dayDisplay][index])) {
                                 return (
                                   <TableItem color="red" width={tableConfig[3 + index]} style={{ borderLeft: `1px solid ${index === 9 ? 'white' : 'black '}`, borderRight: `1px solid ${index === 8 ? 'white' : 'black '}`}}>
                                     {hole}
