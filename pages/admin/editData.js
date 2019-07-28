@@ -57,6 +57,11 @@ class Admin extends React.Component {
       const data = snapshot.val()
       this.setState({ feedSize: data })
     })
+
+    rootRef.child('feedRowHeight').on('value', (snapshot) => {
+      const data = snapshot.val()
+      this.setState({ feedRowHeight: data })
+    })
   }
 
   onUpdateText() {
@@ -94,6 +99,11 @@ class Admin extends React.Component {
     rootRef.child('/feedSize/').set(feedSize)
   }
 
+  onUpdateFeedRowHeight() {
+    const feedRowHeight = this.state.feedRowHeight
+    rootRef.child('/feedRowHeight/').set(feedRowHeight)
+  }
+
   render() {
     return (
       <div>
@@ -122,7 +132,11 @@ class Admin extends React.Component {
         <br/>
         <br/>
         <input type="number" style={{ width: '500px'}} onChange={(e) => this.setState({ feedSize: e.target.value})} value={this.state.feedSize}></input>
-        <button onClick={() => this.onUpdateFeedSize  ()}>Set feex size</button>
+        <button onClick={() => this.onUpdateFeedSize  ()}>Set feed size</button>
+        <br/>
+        <br/>
+        <input type="number" style={{ width: '500px'}} onChange={(e) => this.setState({ feedRowHeight: e.target.value})} value={this.state.feedRowHeight}></input>
+        <button onClick={() => this.onUpdateFeedRowHeight  ()}>Set feed row height</button>
       </div>
     )
   }

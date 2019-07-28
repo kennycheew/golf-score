@@ -15,7 +15,7 @@ const TableWrapper = styled.div`
 
 const Table = styled.div`
   height: 100%;
-  overflow-x: scroll;
+  overflow-x: hidden;
   overflow-y: hidden;
 `
 
@@ -26,7 +26,7 @@ const TableHead = styled.div`
 
 const TableBody = styled.div`
   overflow-y: scroll;
-  height: 91vh;
+  height: 100%;
   width: 100%;
   margin: auto;
   ::-webkit-scrollbar {
@@ -37,6 +37,7 @@ const TableBody = styled.div`
 const TableRow = styled.div`
   display: flex;
   background: ${props => props.bgColor || 'transparent'};
+  height: ${props => props.feedRowHeight ? `${props.feedRowHeight}px` : 'auto'};
 `
 
 const TableItem = styled.div`
@@ -81,13 +82,13 @@ const Par = styled.span`
   font-size: ${(props) => props.feedSize ? 1.4 + (props.feedSize / 10) : 1.4 }vw;
 `
 const Score = styled(TableItem)`
-  width: 4.8vw;
+  width: 4vw;
   white-space: pre-wrap;
   font-size: ${(props) => props.feedSize ? 1.9 + (props.feedSize / 10) : 1.9 }vw;
   text-align: right;
 `
 const ScoreHeader = styled(TableItem)`
-  width: 4.8vw;
+  width: 4vw;
   white-space: pre-wrap;
   font-size: ${(props) => props.feedSize ? 0.7 + (props.feedSize / 10) : 0.7 }vw;
 `
@@ -180,6 +181,11 @@ class Home extends React.Component {
     rootRef.child('feedSize').on('value', (snapshot) => {
       const data = snapshot.val()
       this.setState({ feedSize: parseInt(data) })
+    })
+
+    rootRef.child('feedRowHeight').on('value', (snapshot) => {
+      const data = snapshot.val()
+      this.setState({ feedRowHeight: parseInt(data) })
     })
 
   }
@@ -368,7 +374,7 @@ class Home extends React.Component {
                         ranking = ''
                       }
                       return (
-                        <TableRow bgColor={userIndex % 2 === 0 ? '#bbbbbb' : '#b3b3b3'}>
+                        <TableRow {...this.state} bgColor={userIndex % 2 === 0 ? '#bbbbbb' : '#b3b3b3'}>
                           <Rank feedSize={this.state.feedSize}>
                             {ranking}
                           </Rank>
