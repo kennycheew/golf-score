@@ -53,38 +53,38 @@ const TableItem = styled.div`
 
 const Rank = styled(TableItem)`
   width: 3vw;
-  font-size: ${(props) => props.feedSize ? 1.7 + (feedSize / 10) : 1.7 }vw;
+  font-size: ${(props) => props.feedSize ? 1.7 + (props.feedSize / 10) : 1.7 }vw;
 `
 
 const Name = styled(TableItem)`
   width: 32vw;
   text-overflow: ellipsis;
-  font-size: ${(props) => props.feedSize ? 1.7 + (feedSize / 10) : 1.7 }vw;
+  font-size: ${(props) => props.feedSize ? 1.7 + (props.feedSize / 10) : 1.7 }vw;
   text-align: left;
 `
 
 const Hole = styled(TableItem)`
   width: 1.7vw;
   white-space: pre-wrap;
-  font-size: ${(props) => props.feedSize ? 1.9 + (feedSize / 10) : 1.9 }vw;
+  font-size: ${(props) => props.feedSize ? 1.9 + (props.feedSize / 10) : 1.9 }vw;
 `
 const HoleHeader = styled(TableItem)`
   width: 1.7vw;
   white-space: pre-wrap;
-  font-size: ${(props) => props.feedSize ? 0.9 + (feedSize / 10) : 0.9 }vw;
+  font-size: ${(props) => props.feedSize ? 0.9 + (props.feedSize / 10) : 0.9 }vw;
 `
 const Par = styled.span`
-  font-size: ${(props) => props.feedSize ? 1.4 + (feedSize / 10) : 1.4 }vw;
+  font-size: ${(props) => props.feedSize ? 1.4 + (props.feedSize / 10) : 1.4 }vw;
 `
 const Score = styled(TableItem)`
   width: 4.8vw;
   white-space: pre-wrap;
-  font-size: ${(props) => props.feedSize ? 1.9 + (feedSize / 10) : 1.9 }vw;
+  font-size: ${(props) => props.feedSize ? 1.9 + (props.feedSize / 10) : 1.9 }vw;
 `
 const Round = styled(TableItem)`
   width: 4.8vw;
   white-space: pre-wrap;
-  font-size: ${(props) => props.feedSize ? 1.9 + (feedSize / 10) : 1.9 }vw;
+  font-size: ${(props) => props.feedSize ? 1.9 + (props.feedSize / 10) : 1.9 }vw;
 `
 
 
