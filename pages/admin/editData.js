@@ -26,6 +26,32 @@ class Admin extends React.Component {
       subTitle: '',
       defaultDay: '1'
     }
+    rootRef.child('textDb').on('value', (snapshot) => {
+      const data = snapshot.val()
+      this.setState({ textData: data })
+    })
+    rootRef.child('title').on('value', (snapshot) => {
+      const data = snapshot.val()
+      this.setState({ title: data })
+    })
+    rootRef.child('subTitle').on('value', (snapshot) => {
+      const data = snapshot.val()
+      this.setState({ subTitle: data })
+    })
+    rootRef.child('defaultDay').on('value', (snapshot) => {
+      const data = snapshot.val()
+      this.setState({ defaultDay: data })
+    })
+
+    rootRef.child('feedDelay').on('value', (snapshot) => {
+      const data = snapshot.val()
+      this.setState({ feedDelay: data })
+    })
+
+    rootRef.child('feedPerPage').on('value', (snapshot) => {
+      const data = snapshot.val()
+      this.setState({ feedPerPage: data })
+    })
   }
 
   onUpdateText() {
@@ -48,9 +74,14 @@ class Admin extends React.Component {
     rootRef.child('/defaultDay/').set(defaultDay)
   }
 
-  onUpdateDefaultDay() {
-    const defaultDay = this.state.defaultDay
-    rootRef.child('/defaultDay/').set(defaultDay)
+  onUpdateFeedDelay() {
+    const feedDelay = this.state.feedDelay
+    rootRef.child('/feedDelay/').set(feedDelay)
+  }
+
+  onUpdateFeedPerPage() {
+    const feedPerPage = this.state.feedPerPage
+    rootRef.child('/feedPerPage/').set(feedPerPage)
   }
 
   render() {
@@ -68,8 +99,16 @@ class Admin extends React.Component {
         <button onClick={() => this.onUpdateDefaultDay  ()}>Set default day</button>
         <br/>
         <br/>
-        <textarea onChange={(e) => this.setState({ textData: e.target.value})}></textarea>
+        <textarea onChange={(e) => this.setState({ textData: e.target.value})} value={this.state.textData}></textarea>
         <button onClick={() => this.onUpdateText()}>Update Score</button>
+        <br/>
+        <br/>
+        <input type="number" style={{ width: '500px'}} onChange={(e) => this.setState({ feedDelay: e.target.value})} value={this.state.feedDelay}></input>
+        <button onClick={() => this.onUpdateFeedDelay  ()}>Set feed delay(ms)</button>
+        <br/>
+        <br/>
+        <input type="number" style={{ width: '500px'}} onChange={(e) => this.setState({ feedPerPage: e.target.value})} value={this.state.feedPerPage}></input>
+        <button onClick={() => this.onUpdateFeedPerPage  ()}>Set feed per page</button>
       </div>
     )
   }
