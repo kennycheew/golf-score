@@ -52,6 +52,11 @@ class Admin extends React.Component {
       const data = snapshot.val()
       this.setState({ feedPerPage: data })
     })
+
+    rootRef.child('feedSize').on('value', (snapshot) => {
+      const data = snapshot.val()
+      this.setState({ feedSize: data })
+    })
   }
 
   onUpdateText() {
@@ -84,6 +89,11 @@ class Admin extends React.Component {
     rootRef.child('/feedPerPage/').set(feedPerPage)
   }
 
+  onUpdateFeedSize() {
+    const feedSize = this.state.feedSize
+    rootRef.child('/feedSize/').set(feedSize)
+  }
+
   render() {
     return (
       <div>
@@ -109,6 +119,10 @@ class Admin extends React.Component {
         <br/>
         <input type="number" style={{ width: '500px'}} onChange={(e) => this.setState({ feedPerPage: e.target.value})} value={this.state.feedPerPage}></input>
         <button onClick={() => this.onUpdateFeedPerPage  ()}>Set feed per page</button>
+        <br/>
+        <br/>
+        <input type="number" style={{ width: '500px'}} onChange={(e) => this.setState({ feedSize: e.target.value})} value={this.state.feedSize}></input>
+        <button onClick={() => this.onUpdateFeedSize  ()}>Set feex size</button>
       </div>
     )
   }
