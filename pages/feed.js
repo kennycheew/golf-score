@@ -40,7 +40,7 @@ const TableRow = styled.div`
 `
 
 const TableItem = styled.div`
-  padding: 6px 8px;
+  /* padding: 6px 8px; */
   overflow: hidden;
   white-space: nowrap;
   height: fit-content;
@@ -52,24 +52,28 @@ const TableItem = styled.div`
 `
 
 const Rank = styled(TableItem)`
-  width: 3vw;
+  width: 5vw;
   font-size: ${(props) => props.feedSize ? 1.7 + (props.feedSize / 10) : 1.7 }vw;
 `
 
 const Name = styled(TableItem)`
-  width: 32vw;
+  width: 28vw;
   text-overflow: ellipsis;
   font-size: ${(props) => props.feedSize ? 1.7 + (props.feedSize / 10) : 1.7 }vw;
   text-align: left;
 `
 
 const Hole = styled(TableItem)`
-  width: 1.7vw;
+  width: 1.9vw;
   white-space: pre-wrap;
-  font-size: ${(props) => props.feedSize ? 1.9 + (props.feedSize / 10) : 1.9 }vw;
+  font-size: ${(props) => {
+    const feedSize = props.feedSize / 10 || 0
+    const valueSize = props.value > 9 ? -1 : 0
+    return 1.9 + feedSize + valueSize
+  }}vw;
 `
 const HoleHeader = styled(TableItem)`
-  width: 1.7vw;
+  width: 1.9vw;
   white-space: pre-wrap;
   font-size: ${(props) => props.feedSize ? 0.9 + (props.feedSize / 10) : 0.9 }vw;
 `
@@ -80,11 +84,21 @@ const Score = styled(TableItem)`
   width: 4.8vw;
   white-space: pre-wrap;
   font-size: ${(props) => props.feedSize ? 1.9 + (props.feedSize / 10) : 1.9 }vw;
+  text-align: right;
 `
-const Round = styled(TableItem)`
+const ScoreHeader = styled(TableItem)`
   width: 4.8vw;
   white-space: pre-wrap;
-  font-size: ${(props) => props.feedSize ? 1.9 + (props.feedSize / 10) : 1.9 }vw;
+  font-size: ${(props) => props.feedSize ? 0.7 + (props.feedSize / 10) : 0.7 }vw;
+`
+const Round = styled(TableItem)`
+  width: 3.8vw;
+  white-space: pre-wrap;
+  font-size: ${(props) => {
+    const feedSize = props.feedSize / 10 || 0
+    const valueSize = props.value > 99 ? -0.5 : 0
+    return 1.9 + feedSize + valueSize
+  }}vw;
 `
 
 
@@ -289,6 +303,7 @@ class Home extends React.Component {
       if (this.state.defaultDay === '2') dayDisplay = 'dayTwo'
       if (this.state.defaultDay === '3') dayDisplay = 'dayThree'
     }
+    console.log(head)
     return (
       <FullBackground color="#cecece">
         <Context>
@@ -322,9 +337,13 @@ class Home extends React.Component {
                         )
                       })
                     }
-                    <Score feedSize={this.state.feedSize}>
+                    <ScoreHeader feedSize={this.state.feedSize}>
                       Score
-                    </Score>
+                      <br />
+                      {
+                        head[dayDisplay].reduce((acc,cur) => +acc + +cur, 0)
+                      }
+                    </ScoreHeader>
                     <Round feedSize={this.state.feedSize}>
                       R1
                     </Round>
@@ -363,34 +382,34 @@ class Home extends React.Component {
                               style.paddingLeft = '2.2vw'
                               if (hole == 0) {
                                 return (
-                                  <Hole feedSize={this.state.feedSize} color="red" style style={style}>
+                                  <Hole value={hole} feedSize={this.state.feedSize} color="red" style style={style}>
                                     {''}
                                   </Hole>
                                 )
                               }
                               if (hole == head[dayDisplay][index]) {
                                 return (
-                                  <Hole feedSize={this.state.feedSize} color="white" style={style}>
+                                  <Hole value={hole} feedSize={this.state.feedSize} color="white" style={style}>
                                     {hole}
                                   </Hole>
                                 )
                               }
                               if (parseInt(hole) < parseInt(head[dayDisplay][index] - 1) && hole) {
                                 return (
-                                  <Hole feedSize={this.state.feedSize} color="#e6e66d" style={Object.assign(style, {fontWeight: 'bold',textShadow: '0px 0px 8px #636363'})}>
+                                  <Hole value={hole} feedSize={this.state.feedSize} color="#e6e66d" style={Object.assign(style, {fontWeight: 'bold',textShadow: '0px 0px 8px #636363'})}>
                                     {hole}
                                   </Hole>
                                 )
                               }
                               if (parseInt(hole) < parseInt(head[dayDisplay][index])) {
                                 return (
-                                  <Hole feedSize={this.state.feedSize} color="red" style={style}>
+                                  <Hole value={hole} feedSize={this.state.feedSize} color="red" style={style}>
                                     {hole}
                                   </Hole>
                                 )
                               }
                               return (
-                                <Hole feedSize={this.state.feedSize} style={style}>
+                                <Hole value={hole} feedSize={this.state.feedSize} style={style}>
                                   {hole}
                                 </Hole>
                               )
@@ -401,17 +420,17 @@ class Home extends React.Component {
                               userData.score == 0 ? 'E' : userData.score > 0 ? `+${userData.score}` : userData.score
                             }
                           </Score>
-                          <Round feedSize={this.state.feedSize} color={shotData1.sumShot - shotData1.sumCourt < 0 ? 'red' : shotData1.sumShot - shotData1.sumCourt > 0 ? 'blue' : null} width={tableConfig[21]}>
+                          <Round value={shotData1.sumShot} feedSize={this.state.feedSize} color={shotData1.sumShot - shotData1.sumCourt < 0 ? 'red' : shotData1.sumShot - shotData1.sumCourt > 0 ? 'blue' : null} width={tableConfig[21]}>
                             <span style={{color: "black"}}>
                               {shotData1.sumShot}
                             </span>
                           </Round>
-                          <Round feedSize={this.state.feedSize} color={shotData2.sumShot - shotData2.sumCourt < 0 ? 'red' : shotData2.sumShot - shotData2.sumCourt > 0 ? 'blue' : null} width={tableConfig[21]}>
+                          <Round value={shotData2.sumShot} feedSize={this.state.feedSize} color={shotData2.sumShot - shotData2.sumCourt < 0 ? 'red' : shotData2.sumShot - shotData2.sumCourt > 0 ? 'blue' : null} width={tableConfig[21]}>
                             <span style={{color: "black"}}>
                               {shotData2.sumShot}
                             </span>
                           </Round>
-                          <Round feedSize={this.state.feedSize} color={shotData3.sumShot - shotData3.sumCourt < 0 ? 'red' : shotData3.sumShot - shotData3.sumCourt > 0 ? 'blue' : null} width={tableConfig[21]}>
+                          <Round value={shotData3.sumShot} feedSize={this.state.feedSize} color={shotData3.sumShot - shotData3.sumCourt < 0 ? 'red' : shotData3.sumShot - shotData3.sumCourt > 0 ? 'blue' : null} width={tableConfig[21]}>
                             <span style={{color: "black"}}>
                               {shotData3.sumShot}
                             </span>
