@@ -22,6 +22,7 @@ class Admin extends React.Component {
     super(props)
     this.state = {
       textData: '',
+      feed: '',
       title: '',
       subTitle: '',
       defaultDay: '1'
@@ -29,6 +30,10 @@ class Admin extends React.Component {
     rootRef.child('textDb').on('value', (snapshot) => {
       const data = snapshot.val()
       this.setState({ textData: data })
+    })
+    rootRef.child('feed').on('value', (snapshot) => {
+      const data = snapshot.val()
+      this.setState({ feed: data })
     })
     rootRef.child('title').on('value', (snapshot) => {
       const data = snapshot.val()
@@ -65,8 +70,15 @@ class Admin extends React.Component {
   }
 
   onUpdateText() {
-    const textData = this.state.textData
-    rootRef.child('/textDb/').set(textData)
+    if (window.confirm('Are you sure to sync feed tp mobile?')) {
+      const textData = this.state.feed
+      rootRef.child('/textDb/').set(textData)
+    }
+  }
+
+  onUpdateFeed() {
+    const feed = this.state.feed
+    rootRef.child('/feed/').set(feed)
   }
 
   onUpdateTitle() {
@@ -103,6 +115,7 @@ class Admin extends React.Component {
     const feedRowHeight = this.state.feedRowHeight
     rootRef.child('/feedRowHeight/').set(feedRowHeight)
   }
+  
 
   render() {
     return (
@@ -119,8 +132,9 @@ class Admin extends React.Component {
         <button onClick={() => this.onUpdateDefaultDay  ()}>Set default day</button>
         <br/>
         <br/>
-        <textarea onChange={(e) => this.setState({ textData: e.target.value})} value={this.state.textData}></textarea>
-        <button onClick={() => this.onUpdateText()}>Update Score</button>
+        <textarea onChange={(e) => this.setState({ feed: e.target.value})} value={this.state.feed}></textarea>
+        <button onClick={() => this.onUpdateFeed()}>Update Feed</button>
+        <button onClick={() => this.onUpdateText()}>Sync to Main Page</button>
         <br/>
         <br/>
         <input type="number" style={{ width: '500px'}} onChange={(e) => this.setState({ feedDelay: e.target.value})} value={this.state.feedDelay}></input>

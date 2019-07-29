@@ -145,7 +145,7 @@ class Home extends React.Component {
       skipping: 0,
       feedSize: 0
     }
-    rootRef.child('textDb').on('value', (snapshot) => {
+    rootRef.child('feed').on('value', (snapshot) => {
       const data = snapshot.val()
       const updatedTime = Date.now()
       this.setState({ textDb: data, updatedTime })
