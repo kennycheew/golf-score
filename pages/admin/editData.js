@@ -25,7 +25,8 @@ class Admin extends React.Component {
       feed: '',
       title: '',
       subTitle: '',
-      defaultDay: '1'
+      defaultDay: '1',
+      syncMobile: false
     }
     rootRef.child('textDb').on('value', (snapshot) => {
       const data = snapshot.val()
@@ -79,6 +80,9 @@ class Admin extends React.Component {
   onUpdateFeed() {
     const feed = this.state.feed
     rootRef.child('/feed/').set(feed)
+    if (this.state.syncMobile) {
+      rootRef.child('/textDb/').set(feed)
+    }
   }
 
   onUpdateTitle() {
@@ -134,7 +138,9 @@ class Admin extends React.Component {
         <br/>
         <textarea onChange={(e) => this.setState({ feed: e.target.value})} value={this.state.feed}></textarea>
         <button onClick={() => this.onUpdateFeed()}>Update Feed</button>
-        <button onClick={() => this.onUpdateText()}>Sync to Main Page</button>
+        <br/>
+        <input type="checkbox" onChange={(e) => {this.setState({ syncMobile: e.target.checked })}} checked={this.state.syncMobile}/> check to sync to mobile
+        {/* <button onClick={() => this.onUpdateText()}>Sync to Main Page</button> */}
         <br/>
         <br/>
         <input type="number" style={{ width: '500px'}} onChange={(e) => this.setState({ feedDelay: e.target.value})} value={this.state.feedDelay}></input>
