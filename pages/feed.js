@@ -82,13 +82,13 @@ const Par = styled.span`
   font-size: ${(props) => props.feedSize ? 1.4 + (props.feedSize / 10) : 1.4 }vw;
 `
 const Score = styled(TableItem)`
-  width: 4vw;
+  width: 4.5vw;
   white-space: pre-wrap;
   font-size: ${(props) => props.feedSize ? 1.9 + (props.feedSize / 10) : 1.9 }vw;
   text-align: right;
 `
 const ScoreHeader = styled(TableItem)`
-  width: 4vw;
+  width: 4.5vw;
   white-space: pre-wrap;
   font-size: ${(props) => props.feedSize ? 0.7 + (props.feedSize / 10) : 0.7 }vw;
 `
