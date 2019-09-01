@@ -234,7 +234,7 @@ class Home extends React.Component {
     })
     const head = data[0]
     let body = data.slice(1)
-    if (this.state.skipping + this.state.feedPerPage > body.length) {
+    if (this.state.skipping + this.state.feedPerPage >= body.length - 1) {
       this.setState({ skipping: 0 })
     } else {
       this.setState({ skipping: this.state.skipping + this.state.feedPerPage })
@@ -309,7 +309,6 @@ class Home extends React.Component {
       if (this.state.defaultDay === '2') dayDisplay = 'dayTwo'
       if (this.state.defaultDay === '3') dayDisplay = 'dayThree'
     }
-    console.log(head)
     return (
       <FullBackground color="#cecece">
         <Context>
