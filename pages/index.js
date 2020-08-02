@@ -75,6 +75,21 @@ const checkDiffUserCourt = (userRaw, courtRaw) => {
   }
 }
 
+const rowColorConfig = {
+  '"a"': ['#bbbbbb', '#b3b3b3'],
+  '"b"': ['#d6adad', '#d68989'],
+  '"c"': ['#75c375', '#9abf9a'],
+}
+
+const getRowColor = (userData, userIndex) => {
+  const keys = Object.keys(rowColorConfig)
+  console.log(keys, userData.group)
+  if (keys.includes(userData.group)) {
+    return rowColorConfig[userData.group][userIndex % 2]
+  }
+  return rowColorConfig['"a"'][userIndex % 2]
+}
+
 const tableConfig = ['25px', '200px', '50px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '75px']
 
 
@@ -149,6 +164,7 @@ class Home extends React.Component {
       for (const i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]) {
         userData.dayThree.push(splitData[3+18+18+i])
       }
+      userData.group = splitData[59]
       return userData
     })
     const head = data[0]
@@ -223,7 +239,7 @@ class Home extends React.Component {
                         ranking = ''
                       }
                       return (
-                        <TableRow bgColor={userIndex % 2 === 0 ? '#bbbbbb' : '#a0a0a0'}>
+                        <TableRow bgColor={getRowColor(userData, userIndex)}>
                           <TableItem width={tableConfig[0]}>
                             {ranking}
                           </TableItem>

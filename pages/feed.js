@@ -130,9 +130,9 @@ const checkDiffUserCourt = (userRaw, courtRaw) => {
 }
 
 const rowColorConfig = {
-  a: ['#bbbbbb', '#b3b3b3'],
-  '"se"': ['#d6adad', '#d68989'],
-  '"gr"': ['#75c375', '#9abf9a'],
+  '"a"': ['#bbbbbb', '#b3b3b3'],
+  '"b"': ['#d6adad', '#d68989'],
+  '"c"': ['#75c375', '#9abf9a'],
 }
 
 const getRowColor = (userData, userIndex) => {
@@ -141,7 +141,7 @@ const getRowColor = (userData, userIndex) => {
   if (keys.includes(userData.group)) {
     return rowColorConfig[userData.group][userIndex % 2]
   }
-  return rowColorConfig.a[userIndex % 2]
+  return rowColorConfig['"a"'][userIndex % 2]
 }
 
 const tableConfig = ['25px', '200px', '50px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '75px']
