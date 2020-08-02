@@ -141,7 +141,7 @@ const getRowColor = (userData, userIndex) => {
   if (keys.includes(userData.group)) {
     return rowColorConfig[userData.group][userIndex % 2]
   }
-  return rowColorConfig.a[userIndex % 2]
+  return rowColorConfig['"a"'][userIndex % 2]
 }
 
 const tableConfig = ['25px', '200px', '50px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '25px', '75px']
