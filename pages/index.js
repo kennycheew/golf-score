@@ -78,7 +78,7 @@ const checkDiffUserCourt = (userRaw, courtRaw) => {
 const rowColorConfig = {
   '"a"': ['#bbbbbb', '#989898'],
   '"b"': ['#d6adad', '#e494a9'],
-  '"c"': ['#66b78f', '#9abf9a'],
+  '"c"': ['#5b8c74', '#9abf9a'],
 }
 
 const getRowColor = (userData, userIndex) => {
