@@ -137,7 +137,6 @@ const rowColorConfig = {
 
 const getRowColor = (userData, userIndex) => {
   const keys = Object.keys(rowColorConfig)
-  console.log(keys, userData.group)
   if (keys.includes(userData.group)) {
     return rowColorConfig[userData.group][userIndex % 2]
   }
@@ -215,39 +214,7 @@ class Home extends React.Component {
     }
     const row = this.state.textDb.split('""')
 
-    const emptyData = {
-      dayOne: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-      dayThree: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-      dayTwo: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-      name: '',
-      ranking: '',
-      score: ''
-    }
-
-    const data = row.map(rowData => {
-      const splitData = rowData.split('	')
-      const userData = {}
-      userData.ranking = splitData[1]
-      userData.score = splitData[2]
-      userData.name = splitData[3]
-      if (splitData[3]) {
-        userData.name = splitData[3].replace(/"/g, '')
-      }
-      userData.dayOne = []
-      for (const i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]) {
-        userData.dayOne.push(splitData[3+i])
-      }
-      userData.dayTwo = []
-      for (const i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]) {
-        userData.dayTwo.push(splitData[3+18+i])
-      }
-      userData.dayThree = []
-      for (const i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]) {
-        userData.dayThree.push(splitData[3+18+18+i])
-      }
-      return userData
-    })
-    const head = data[0]
+    const data = row.map(rowData => rowData)
     let body = data.slice(1)
     if (this.state.skipping + this.state.feedPerPage >= body.length - 1) {
       this.setState({ skipping: 0 })
@@ -305,7 +272,7 @@ class Home extends React.Component {
     body = body.map((userData, userIndex, array) => {
       let { ranking } = userData
       if (userIndex != 0 && userData.score === body[userIndex - 1].score ) {
-        ranking = array.find(ele => ele.score === userData.score).ranking
+        ranking = array.find(ele => ele.score === userData.score && ele.group === userData.group).ranking
       }
       return Object.assign({}, userData, { ranking } )
     })
